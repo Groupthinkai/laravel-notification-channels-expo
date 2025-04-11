@@ -71,6 +71,13 @@ class ExpoMessage
     protected $priority = 'default';
 
     /**
+     * When true, the notification will be delivered to the app as a background notification even if the title and body are empty.
+     *
+     * @var bool
+     */
+    protected $contentAvailable = false;
+
+    /**
      * Create a message with given body.
      *
      * @param  string  $title
@@ -235,6 +242,19 @@ class ExpoMessage
     }
 
     /**
+     * Set the content available flag.
+     *
+     * @param  bool  $value
+     * @return $this
+     */
+    public function contentAvailable(bool $value): ExpoMessage
+    {
+        $this->contentAvailable = $value;
+
+        return $this;
+    }
+
+    /**
      * Get an array representation of the message.
      *
      * @return array
@@ -255,6 +275,9 @@ class ExpoMessage
         }
         if (! empty($this->channelId)) {
             $message['channelId'] = $this->channelId;
+        }
+        if ($this->contentAvailable) {
+            $message['_contentAvailable'] = true;
         }
 
         return $message;
